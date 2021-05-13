@@ -37,6 +37,7 @@ async function main() {
   server.use('/artists', artistRoutes)
 
   server.use(ErrorHandler.log)
+  server.use(ErrorHandler.wrapJoiErrors)
   server.use(ErrorHandler.wrapErrors)
   server.use(ErrorHandler.handle)
 }
