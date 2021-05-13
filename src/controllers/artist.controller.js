@@ -10,3 +10,21 @@ export async function create(request, response, next) {
     next(error)
   }
 }
+
+export async function get(request, response, next) {
+  try {
+    const user = await artistService.get(request.params.id)
+    response.status(StatusCodes.CREATED).json(user)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export async function getAll(request, response, next) {
+  try {
+    const users = await artistService.getAll()
+    response.status(StatusCodes.OK).json(users)
+  } catch (error) {
+    next(error)
+  }
+}
