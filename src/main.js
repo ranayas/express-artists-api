@@ -3,6 +3,7 @@ import config from './config'
 import morgan from 'morgan'
 import artistRoutes from './routes/artist.routes'
 import { Database } from './database'
+import { ErrorHandler } from './middlewares/error.handler'
 
 const server = express()
 
@@ -34,6 +35,10 @@ async function main() {
   })
 
   server.use('/artists', artistRoutes)
+
+  server.use(ErrorHandler.log)
+  server.use(ErrorHandler.wrapErrors)
+  server.use(ErrorHandler.handle)
 }
 
 main()
