@@ -10,10 +10,10 @@ export const definer = sequelize => {
         allowNull: false
       },
       dateRelease: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.DATE,
         allowNull: false
       }
     },
-    { sequelize, tableName: 'Album' }
+    { sequelize }
   )
 }

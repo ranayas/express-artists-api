@@ -3,6 +3,7 @@ import config from './config'
 import morgan from 'morgan'
 import artistRoutes from './routes/artist.routes'
 import genreRoutes from './routes/genre.routes'
+import albumRoutes from './routes/album.routes'
 import database from './database'
 import { ErrorHandler } from './middlewares/error.handler'
 
@@ -11,7 +12,10 @@ const server = express()
 async function main() {
   try {
     await database.testConnection()
-    await database.loadModels().defineRelationships().syncTables()
+    await database
+      .loadModels()
+      .defineRelationships()
+      .syncTables({ force: true })
   } catch (error) {
     console.error(`Unable to connect to the database. ${error}`)
   }
@@ -25,6 +29,7 @@ async function main() {
 
   server.use('/artists', artistRoutes)
   server.use('/genres', genreRoutes)
+  server.use('/albums', albumRoutes)
 
   server.use(ErrorHandler.log)
   server.use(ErrorHandler.wrapJoiErrors)

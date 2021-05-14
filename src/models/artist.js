@@ -10,6 +10,6 @@ export const definer = sequelize => {
         allowNull: false
       }
     },
-    { sequelize, tableName: 'Artist' }
+    { sequelize }
   )
 }
