@@ -15,6 +15,7 @@ export class ErrorHandler {
     return config.isDevelopment ? { ...payload, stack } : payload
   }
 
+  /* disable-next-line */
   static wrapJoiErrors(error, request, response, next) {
     if (error.isJoi) {
       const messages = error.details.map(detail => detail.message)

@@ -15,6 +15,16 @@ export async function get(id) {
   return artist
 }
 
-export async function getAll() {
+export function getAll() {
   return Artist.findAll()
+}
+
+export async function update({ id, name }) {
+  const user = await get(id)
+  return user.update({ name })
+}
+
+export async function remove(id) {
+  const user = await get(id)
+  return user.destroy()
 }

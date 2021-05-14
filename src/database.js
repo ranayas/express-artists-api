@@ -1,34 +1,34 @@
 import { Sequelize } from 'sequelize'
 import * as models from './models/setup-models'
+import config from './config'
 
-export class Database {
-  #sequelize
-
-  constructor(
-    { connection, username, password, host, port, database },
-    options = { logging: true }
-  ) {
-    this.#sequelize = new Sequelize(
-      `${connection}://${username}:${password}@${host}:${port}/${database}`,
-      options
-    )
+const sequelize = new Sequelize(
+  config.DB_DATABASE,
+  config.DB_USERNAME,
+  config.DB_PASSWORD,
+  {
+    host: config.DB_HOST,
+    port: config.DB_PORT,
+    dialect: config.DB_CONNECTION,
+    logging: false
   }
+)
 
+const database = {
   loadModels() {
-    models.definers.forEach(definer => definer(this.#sequelize))
+    models.definers.forEach(definer => definer(sequelize))
     return this
-  }
-
+  },
   syncTables(syncOptions) {
-    return this.#sequelize.sync(syncOptions)
-  }
-
+    return sequelize.sync(syncOptions)
+  },
+  testConnection() {
+    return sequelize.authenticate()
+  },
   defineRelationships() {
     models.defineRelationships()
     return this
   }
-
-  testConnection() {
-    return this.#sequelize.authenticate()
-  }
 }
+
+export default database

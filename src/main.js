@@ -2,24 +2,13 @@ import express from 'express'
 import config from './config'
 import morgan from 'morgan'
 import artistRoutes from './routes/artist.routes'
-import { Database } from './database'
+import genreRoutes from './routes/genre.routes'
+import database from './database'
 import { ErrorHandler } from './middlewares/error.handler'
 
 const server = express()
 
 async function main() {
-  const database = new Database(
-    {
-      database: config.DB_DATABASE,
-      connection: config.DB_CONNECTION,
-      host: config.DB_HOST,
-      password: config.DB_PASSWORD,
-      port: config.DB_PORT,
-      username: config.DB_USERNAME
-    },
-    { logging: false }
-  )
-
   try {
     await database.testConnection()
     await database.loadModels().defineRelationships().syncTables()
@@ -35,6 +24,7 @@ async function main() {
   })
 
   server.use('/artists', artistRoutes)
+  server.use('/genres', genreRoutes)
 
   server.use(ErrorHandler.log)
   server.use(ErrorHandler.wrapJoiErrors)
